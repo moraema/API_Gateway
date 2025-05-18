@@ -1,5 +1,6 @@
-import { loginUsuario } from '../services/login.service.js';
-import { crearUsuario } from '../services/registro.service.js';
+import { loginUsuario } from '../services/auth.services.js';
+import { crearUsuario } from '../services/tareas.services.js';
+import { checkLoginService } from '../services/auth.services.js';
 
 export const gatewayController = {
   login: async (req, res) => {
@@ -11,13 +12,24 @@ export const gatewayController = {
     }
   },
 
-  registro: async (req, res) => {
+   registro: async (req, res) => {
+    const loginActivo = await checkLoginService();
+
+    if (!loginActivo) {
+      return res.status(503).json({ message: "Error,  Intenta más tarde." });
+    }
+
     try {
       const token = req.headers.authorization;
-      const result = await crearUsuario(req.body, token);
-      res.status(201).json(result);
+      const nuevoUsuario = await crearUsuario(req.body, token); 
+      return res.status(201).json(nuevoUsuario);
+
     } catch (error) {
-      res.status(400).json({ message: "Registro fallido", error: error.message });
+      const backendError = error.response?.data?.error?.message || error.message;
+      return res.status(500).json({ 
+        message: "Error al registrar usuario", 
+        error: backendError 
+      });
     }
   }
-};
+}; 

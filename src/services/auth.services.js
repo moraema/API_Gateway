@@ -4,7 +4,7 @@ import { SERVICES } from '../configs/services.configs.js';
 export const checkLoginService = async () => {
   try {
     const response = await axios.get(`${SERVICES.LOGIN}/health`);
-    return response.status === 200;
+    return response.data
   } catch {
     return false;
   }
