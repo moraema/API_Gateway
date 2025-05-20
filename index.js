@@ -13,6 +13,11 @@ app.use(cors({ origin: "*" }));
 app.use(express.json()); 
 
 
+app.get('/health', (req, res) => {
+  res.status(200).send('API Gateway is running');
+});
+
+
 app.use('/auth', loginUsuario);
 app.use('/tareas', registroTareas);
 

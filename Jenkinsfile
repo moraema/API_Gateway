@@ -15,12 +15,12 @@ pipeline {
         // IPs de servicios LOGIN por rama
         LOGIN_DEV = 'http://52.45.156.125:3000'
         LOGIN_QA = 'http://52.23.140.75:3000'
-        LOGIN_PROD = 'http://107.22.122.180:3000'
+        LOGIN_PROD = 'http://107.22.122.180:3000' //
 
         // IPs de servicios TASK por rama
         TASK_DEV = 'http://52.45.156.125:8080'
         TASK_QA = 'http://34.197.126.56:8080'
-        TASK_PROD = 'http://23.20.93.87:8080'
+        TASK_PROD = 'http://23.20.93.87:8080' //
 
         REMOTE_PATH = '/home/ubuntu/API_REGISTRO'
     }
@@ -59,7 +59,6 @@ pipeline {
                     PORT=4000
                     LOGIN_SERVICE_URL=${login_url}
                     TASK_SERVICE_URL=${task_url}
-                    JWT_SECRET=secret-Jenkins-@256-\$12
                     """
 
                     
