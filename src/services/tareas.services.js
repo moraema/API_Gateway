@@ -10,3 +10,12 @@ export const crearUsuario = async (data, token) => {
   return response.data;
 };
 
+
+export const checkRegistroService = async () => {
+  try {
+    const response = await axios.get(`${SERVICES.REGISTRO}/health`);
+    return response.data
+  } catch {
+    return false;
+  }
+};
