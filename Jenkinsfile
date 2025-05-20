@@ -22,7 +22,7 @@ pipeline {
         TASK_QA = 'http://34.197.126.56:8080'
         TASK_PROD = 'http://23.20.93.87:8080' //
 
-        REMOTE_PATH = '/home/ubuntu/API_REGISTRO'
+        REMOTE_PATH = '/home/ubuntu/API_Gateway'
     }
 
     stages {
@@ -54,13 +54,6 @@ pipeline {
                                    env.ACTUAL_BRANCH == 'QA' ? TASK_QA :
                                    env.ACTUAL_BRANCH == 'main' ? TASK_PROD : ''
 
-                    // Contenido del archivo .env
-                    def envFile = """
-                    PORT=4000
-                    LOGIN_SERVICE_URL=${login_url}
-                    TASK_SERVICE_URL=${task_url}
-                    """
-
                     
                     sh """
                     ssh -i $SSH_KEY -o StrictHostKeyChecking=no $EC2_USER@$ip '
@@ -89,9 +82,10 @@ pipeline {
                         git pull origin ${env.ACTUAL_BRANCH}
 
                         echo "📝 Generando archivo .env..."
-                        cat <<EOF > .env
-                        ${envFile}
-                         EOF
+                        echo "PORT=4000" > .env
+                        echo "LOGIN_SERVICE_URL=${login_url}" >> .env
+                        echo "TASK_SERVICE_URL=${task_url}" >> .env
+
 
                         npm ci &&
                         echo "📦 Instalando CORS..." &&
